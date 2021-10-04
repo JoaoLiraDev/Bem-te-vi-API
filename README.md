@@ -1,8 +1,8 @@
-# Rest API - Web app - MyQuestions
+# Rest API - Web app - Bem-Te-vi
 
 Olá bem vindo ao meu repositório!
 
-Estou construindo essa api em Node.js para servir as requests do front-end que está sendo construido em React. Este é um projeto  acadêmico desenvolvido para conclusão do curso.
+Estou construindo essa api em Node.js para servir as requests do front-end que está sendo construido em React.
 
 Toda a estrutura ainda está em desenvolvimento em fase inicial, após a finalização vou disponibilizar uma documentação melhor sobre as funções e requisitos desta api.
 
