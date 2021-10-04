@@ -1,0 +1,15 @@
+{
+    "cadastraUsuario": {
+        "data": [
+            {
+                "id": "1",
+                "username": "MarceloDev",
+                "fistname": "Marcelo",
+                "lastname": "Almeida",
+                "birthdate": "2003-06-11T00:00:00Z",
+                "cellphone": "(11)(111111111)",
+                "email": "email@email.com"
+            }
+        ]
+    }
+}
