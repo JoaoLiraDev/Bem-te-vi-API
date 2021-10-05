@@ -1,7 +1,6 @@
 const mysql = require('../config/db').pool;
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const nodemailer = require('nodemailer');
 
 
 exports.postCadastro = (req, res, next) => {
@@ -41,7 +40,7 @@ exports.postCadastro = (req, res, next) => {
                                         USERNAME: req.body.nome,
                                         PASSWORD: hash,
                                         EMAIL: req.body.email,
-                                        FIRST_NAME: req.body.fist_name,
+                                        FIRST_NAME: req.body.first_name,
                                         LAST_NAME: req.body.last_name,
                                         ESPECIALIDADE: req.body.especialidade,
                                         DT_NASC: req.body.dt_nasc
