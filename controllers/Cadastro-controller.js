@@ -1,23 +1,27 @@
 const mysql = require('../config/db').pool;
 const jwt = require('jsonwebtoken');
 const login = require('../middleware/login');
+const { inspect, format } = require('util');
+const JSON5 = require('json5')
 
-exports.getAllQuests = (req, res, next) => {
+exports.getAgendamentos = (req, res, next) => {
     mysql.getConnection((error, conn) => {
         conn.query(
-            'select * from questions order by id_quest desc',
+            'select title, DATE_FORMAT( startDate, "%Y-%m-%d %H:%m" ) AS startDate , DATE_FORMAT( endDate, "%Y-%m-%d %H:%m" ) AS endDate, ID_AGENDAMENTO as id, location from Agendamentos order by ID_AGENDAMENTO asc',
             (error, result, field) => {
                 conn.release();
 
                 if (error) {
                     return res.status(500).send({
                         error: error,
-                        response: null
+                        response: null,
+                        mensagem: "Falha ao realizar agendamento"
                     });
                 };
-
+                
+            
                 res.status(200).send({
-                    mensagem: "Resultado das Questões cadastradas",
+                    mensagem: "Agendamento realizado com sucesso",
                     Query_result: result
                 });
             }
@@ -25,24 +29,25 @@ exports.getAllQuests = (req, res, next) => {
     });
 };
 
-exports.getUserQuests = (req, res, next) => {
+exports.getAgendamentosFormatado = (req, res, next) => {
     mysql.getConnection((error, conn) => {
         conn.query(
-            'Select * from Questions where ID_USER = ? order by id_quest desc',
-            req.usuario.id_user,
-            (error, resultado, field) => {
+            'select title, DATE_FORMAT( startDate, "%d/%m/%Y - %H:%m" ) AS startDate , DATE_FORMAT( endDate, "%d/%m/%Y - %H:%m" ) AS endDate, ID_AGENDAMENTO as id, location from Agendamentos order by ID_AGENDAMENTO asc',
+            (error, result, field) => {
                 conn.release();
 
                 if (error) {
                     return res.status(500).send({
                         error: error,
-                        response: null
+                        response: null,
+                        mensagem: "Falha ao realizar agendamento"
                     });
                 };
-
+                
+            
                 res.status(200).send({
-                    mensagem: "Questões do usuário!",
-                    Query_result: resultado
+                    mensagem: "Agendamento realizado com sucesso",
+                    Query_result: result
                 });
             }
         );
@@ -195,12 +200,44 @@ exports.updateQuest = (req, res, next) => {
 
 }
 
-exports.deleteQuest = (req, res, next) => {
+exports.deleteAgendamento = (req, res, next) => {
     mysql.getConnection((error, conn) => {
-        conn.query(`delete from questions where ID_QUEST = ?`,
-            [req.params.id_quest],
+        conn.query(`delete from Agendamentos where ID_AGENDAMENTO = ?`,
+            [req.params.id_agendamento],
             (error, result, field) => {
                 conn.release();
+                if (error) {
+                    return res.status(500).send({
+                        error: error,
+                        response: null,
+                        mensagem: "Falha ao cancelar agendamento!"
+                    });
+                };
+
+                res.status(200).send({
+                    mensagem: "Agendamento cancelado com sucesso!"
+                });
+            }
+        );
+    });
+};
+
+
+exports.postCadastroAgendamento = (req, res, next) => {
+    console.log(req.usuario);
+    const Agendamento = {
+        title: req.body.title,
+        startDate: req.body.startDate,
+        endDate: req.body.endDate,
+        location: req.body.location
+    };
+    mysql.getConnection((error, conn) => {
+        conn.query(
+            'INSERT INTO Agendamentos(title,startDate,endDate,location)VALUES(?,?,?,?)',
+            [Agendamento.title, Agendamento.startDate, Agendamento.endDate, Agendamento.location],
+            (error, resultado, field) => {
+                conn.release();
+
                 if (error) {
                     return res.status(500).send({
                         error: error,
@@ -208,10 +245,13 @@ exports.deleteQuest = (req, res, next) => {
                     });
                 };
 
-                res.status(200).send({
-                    mensagem: "Questão deletada com sucesso!"
+                res.status(201).send({
+                    mensagem: "Agendamento realizado com sucesso!",
+                    id_Agendamento: resultado.insertId,
+                    Agendamento_Cadastrado: Agendamento
                 });
             }
         );
     });
+
 }

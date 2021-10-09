@@ -5,14 +5,16 @@ const jwt = require('jsonwebtoken');
 const login = require('../middleware/login');
 const controllerQuest = require('../controllers/Cadastro-controller');
 
-router.get('/all', login.opcional, controllerQuest.getAllQuests);
+router.get('/all', login.opcional, controllerQuest.getAgendamentos);
 
-router.get('/user', login.obrigatorio, controllerQuest.getUserQuests);
+router.get('/allFormatado', login.opcional, controllerQuest.getAgendamentosFormatado);
 
 router.post('/cadastroProntuario', controllerQuest.postCadastroPront);
 
+router.post('/agendamentos', controllerQuest.postCadastroAgendamento);
+
 router.patch('/atualiza/:id_quest', login.obrigatorio, controllerQuest.updateQuest);
 
-router.delete('/delete_quest/:id_quest', login.obrigatorio, controllerQuest.deleteQuest)
+router.delete('/delete_agendamento/:id_agendamento', login.obrigatorio, controllerQuest.deleteAgendamento)
 
 module.exports = router;
