@@ -7,7 +7,7 @@ const JSON5 = require('json5')
 exports.getAgendamentos = (req, res, next) => {
     mysql.getConnection((error, conn) => {
         conn.query(
-            'select title, DATE_FORMAT( startDate, "%Y-%m-%d %H:%m" ) AS startDate , DATE_FORMAT( endDate, "%Y-%m-%d %H:%m" ) AS endDate, ID_AGENDAMENTO as id, location from Agendamentos order by ID_AGENDAMENTO asc',
+            'select title, DATE_FORMAT( startDate, "%Y-%m-%d %H:%i" ) AS startDate , DATE_FORMAT( endDate, "%Y-%m-%d %H:%i" ) AS endDate, ID_AGENDAMENTO as id, location from Agendamentos order by ID_AGENDAMENTO asc',
             (error, result, field) => {
                 conn.release();
 
@@ -32,7 +32,7 @@ exports.getAgendamentos = (req, res, next) => {
 exports.getAgendamentosFormatado = (req, res, next) => {
     mysql.getConnection((error, conn) => {
         conn.query(
-            'select title, DATE_FORMAT( startDate, "%d/%m/%Y - %H:%m" ) AS startDate , DATE_FORMAT( endDate, "%d/%m/%Y - %H:%m" ) AS endDate, ID_AGENDAMENTO as id, location from Agendamentos order by ID_AGENDAMENTO asc',
+            'select title, DATE_FORMAT( startDate, "%d/%m/%Y - %H:%i" ) AS startDate , DATE_FORMAT( endDate, "%d/%m/%Y - %H:%i" ) AS endDate, ID_AGENDAMENTO as id, location from Agendamentos order by ID_AGENDAMENTO asc',
             (error, result, field) => {
                 conn.release();
 
