@@ -54,6 +54,57 @@ exports.getAgendamentosFormatado = (req, res, next) => {
     });
 };
 
+exports.getDadosPront = (req, res, next) => {
+    mysql.getConnection((error, conn) => {
+        conn.query(
+            'select ID_PRONT_PSICOPEDAGOGIA, NOME_PACIENTE, DATE_FORMAT( DT_NASC, "%d/%m/%Y" ) AS DT_NASC, TRIMESTRE, RESPONSAVEL, OBSERVACAO  from Prontuario_psicopedagogia order by ID_PRONT_PSICOPEDAGOGIA desc;',
+            (error, result, field) => {
+                conn.release();
+
+                if (error) {
+                    return res.status(500).send({
+                        error: error,
+                        response: null,
+                        mensagem: "Falha ao buscar prontuários"
+                    });
+                };
+                
+            
+                res.status(200).send({
+                    mensagem: "Prontuários cadastrados",
+                    Query_result: result
+                });
+            }
+        );
+    });
+};
+
+exports.getDadosProntId = (req, res, next) => {
+    mysql.getConnection((error, conn) => {
+        conn.query(
+            'select *,DATE_FORMAT( DT_NASC, "%Y-%m-%d" ) as data_formatada  from Prontuario_psicopedagogia where ID_PRONT_PSICOPEDAGOGIA = ?;',
+            req.params.id_pront,
+            (error, result, field) => {
+                conn.release();
+
+                if (error) {
+                    return res.status(500).send({
+                        error: error,
+                        response: null,
+                        mensagem: "Falha ao buscar prontuários"
+                    });
+                };
+                
+            
+                res.status(200).send({
+                    mensagem: "Prontuário",
+                    Query_result: result
+                });
+            }
+        );
+    });
+};
+
 exports.postCadastroPront = (req, res, next) => {
     console.log(req.usuario);
     const pront = {

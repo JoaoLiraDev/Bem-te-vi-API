@@ -9,6 +9,10 @@ router.get('/all', login.opcional, controllerQuest.getAgendamentos);
 
 router.get('/allFormatado', login.opcional, controllerQuest.getAgendamentosFormatado);
 
+router.get('/prontuarios', login.opcional, controllerQuest.getDadosPront);
+
+router.get('/prontuarios/:id_pront', login.opcional, controllerQuest.getDadosProntId);
+
 router.post('/cadastroProntuario', controllerQuest.postCadastroPront);
 
 router.post('/agendamentos', controllerQuest.postCadastroAgendamento);
