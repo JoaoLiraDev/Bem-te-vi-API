@@ -79,6 +79,35 @@ exports.getDadosPront = (req, res, next) => {
     });
 };
 
+
+
+exports.getAllDadosProntPaciente = (req, res, next) => {
+    mysql.getConnection((error, conn) => {
+        conn.query(
+            'select * from Prontuario_psicopedagogia where NOME_PACIENTE = ? order by trimestre asc;',
+            req.body.name,
+            (error, result, field) => {
+                conn.release();
+
+                if (error) {
+                    return res.status(500).send({
+                        error: error,
+                        response: null,
+                        mensagem: "Falha ao buscar prontuários"
+                    });
+                };
+                
+            
+                res.status(200).send({
+                    mensagem: "Prontuário",
+                    Query_result: result
+                });
+            }
+        );
+    });
+};
+
+
 exports.getDadosProntId = (req, res, next) => {
     mysql.getConnection((error, conn) => {
         conn.query(
