@@ -83,6 +83,30 @@ exports.getUser = (req, res, next) => {
     });
 }
 
+exports.getUsuarios = (req, res, next) => {
+    mysql.getConnection((error, conn) => {
+        conn.query(
+            'SELECT * FROM Users',
+            (error, result, field) => {
+                conn.release();
+
+                if (error) {
+                    return res.status(500).send({
+                        error: error,
+                        response: null
+                    });
+                };
+
+                res.status(200).send({
+                    mensagem: "Dados do usuário",
+                    user: result
+                });
+            }
+        );
+    });
+}
+
+
 exports.postLogin = (req, res, next) => {
     mysql.getConnection((error, conn) => {
         if (error) { return res.status(500).send({ error: error }) }
@@ -123,3 +147,114 @@ exports.postLogin = (req, res, next) => {
         });
     });
 };
+
+
+exports.updateReseteSenha = (req, res, next) => {
+    
+    mysql.getConnection((err, conn) => {
+        bcrypt.hash('BTV2021', 10, (errBcrypt, hash) => {
+            if (errBcrypt) { return res.status(500).send({ error_crypt: errBcrypt }) }
+            conn.query(
+                'UPDATE users SET PASSWORD = ? WHERE ID_USERS = ?',
+                [hash, req.params.id_user],
+                (error, resultado, field) => {
+                    conn.release();
+
+                    if (error) { return res.status(500).send({ error: error, response: null }) };
+
+                    response = {
+                        mensagem: "Senha resetada com sucesso!",
+                        senhaNova: "Nova senha - BTV2021"
+                    }
+
+                    return res.status(201).send(response);
+                }
+            );
+
+        });
+    });
+};
+
+
+exports.postCadastroPaciente = (req, res, next) => {
+    const paciente = {
+        NOME_RESPONSAVEL: req.body.NOME_RESPONSAVEL,
+        DT_NASC_RESPONSAVEL: req.body.DT_NASC_RESPONSAVEL,
+        RG_RESPONSAVEL: req.body.RG_RESPONSAVEL,
+        CPF_RESPONSAVEL: req.body.CPF_RESPONSAVEL,
+        TEL_RESPONSAVEL: req.body.TEL_RESPONSAVEL,
+        EMAIL_RESPONSAVEL: req.body.EMAIL_RESPONSAVEL,
+        LOGRADOURO: req.body.LOGRADOURO,
+        BAIRRO: req.body.BAIRRO,
+        NOME_PACIENTE: req.body.NOME_PACIENTE,
+        DT_NASC_PACIENTE: req.body.DT_NASC_PACIENTE,
+        RG_PACIENTE: req.body.RG_PACIENTE,
+        CPF_PACIENTE: req.body.CPF_PACIENTE,
+        TEL_PACIENTE: req.body.TEL_PACIENTE,
+        EMAIL_PACIENTE: req.body.EMAIL_PACIENTE,
+    };
+    mysql.getConnection((error, conn) => {
+        conn.query(
+            `INSERT INTO Pacientes(
+                NOME_RESPONSAVEL,
+                DT_NASC_RESPONSAVEL,
+                RG_RESPONSAVEL,
+                CPF_RESPONSAVEL,
+                TEL_RESPONSAVEL,
+                EMAIL_RESPONSAVEL,
+                LOGRADOURO,
+                BAIRRO,
+                NOME_PACIENTE,
+                DT_NASC_PACIENTE,
+                RG_PACIENTE,
+                CPF_PACIENTE,
+                TEL_PACIENTE,
+                EMAIL_PACIENTE
+                )VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?)`,
+            [paciente.NOME_PACIENTE, paciente.DT_NASC_RESPONSAVEL, paciente.RG_RESPONSAVEL, paciente.CPF_RESPONSAVEL, paciente.TEL_RESPONSAVEL, paciente.EMAIL_RESPONSAVEL, paciente.LOGRADOURO, paciente.BAIRRO, paciente.NOME_PACIENTE, paciente.DT_NASC_PACIENTE, paciente.RG_PACIENTE, paciente.CPF_PACIENTE, paciente.TEL_PACIENTE, paciente.EMAIL_PACIENTE],
+            (error, resultado, field) => {
+                conn.release();
+
+                if (error) {
+                    return res.status(500).send({
+                        error: error,
+                        response: null,
+                        mensagem: "Falha ao cadastrar paciente!"
+                    });
+                };
+
+                res.status(201).send({
+                    mensagem: "Paciente cadastrado com sucesso!",
+                    id_paciente: resultado.insertId,
+                    Paciente_Cadastrado: paciente
+                });
+            }
+        );
+    });
+
+}
+
+
+
+exports.getPacientes = (req, res, next) => {
+    mysql.getConnection((error, conn) => {
+        conn.query(
+            'SELECT * FROM pacientes;',
+            (error, result, field) => {
+                conn.release();
+
+                if (error) {
+                    return res.status(500).send({
+                        error: error,
+                        response: null
+                    });
+                };
+
+                res.status(200).send({
+                    mensagem: "Dados do usuário",
+                    Query_result: result
+                });
+            }
+        );
+    });
+}

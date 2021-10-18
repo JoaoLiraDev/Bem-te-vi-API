@@ -23,4 +23,6 @@ router.patch('/atualiza/:id_quest', login.obrigatorio, controllerQuest.updateQue
 
 router.delete('/delete_agendamento/:id_agendamento', login.obrigatorio, controllerQuest.deleteAgendamento)
 
+router.patch('/atualizaProntuario/:id_pront', login.obrigatorio, controllerQuest.patchAtualizaPront);
+
 module.exports = router;
