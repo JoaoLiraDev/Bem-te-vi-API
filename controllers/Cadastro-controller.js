@@ -80,6 +80,31 @@ exports.getDadosPront = (req, res, next) => {
 };
 
 
+exports.getAllDadosPaciente = (req, res, next) => {
+    mysql.getConnection((error, conn) => {
+        conn.query(
+            'select * from pacientes where EMAIL_RESPONSAVEL = ? ',
+            req.body.email,
+            (error, result, field) => {
+                conn.release();
+
+                if (error) {
+                    return res.status(500).send({
+                        error: error,
+                        response: null,
+                        mensagem: "Falha ao buscar assistido"
+                    });
+                };
+                
+            
+                res.status(200).send({
+                    mensagem: "Dados Assistido",
+                    Query_result: result
+                });
+            }
+        );
+    });
+};
 
 exports.getAllDadosProntPaciente = (req, res, next) => {
     mysql.getConnection((error, conn) => {

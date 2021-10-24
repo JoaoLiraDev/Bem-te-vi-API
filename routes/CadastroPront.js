@@ -15,6 +15,8 @@ router.get('/prontuarios/:id_pront', login.opcional, controllerQuest.getDadosPro
 
 router.post('/prontuarios/paciente', login.opcional, controllerQuest.getAllDadosProntPaciente);
 
+router.post('/paciente', login.opcional, controllerQuest.getAllDadosPaciente);
+
 router.post('/cadastroProntuario', controllerQuest.postCadastroPront);
 
 router.post('/agendamentos', controllerQuest.postCadastroAgendamento);
