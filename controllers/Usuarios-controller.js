@@ -211,7 +211,7 @@ exports.postCadastroPaciente = (req, res, next) => {
                 TEL_PACIENTE,
                 EMAIL_PACIENTE
                 )VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?)`,
-            [paciente.NOME_PACIENTE, paciente.DT_NASC_RESPONSAVEL, paciente.RG_RESPONSAVEL, paciente.CPF_RESPONSAVEL, paciente.TEL_RESPONSAVEL, paciente.EMAIL_RESPONSAVEL, paciente.LOGRADOURO, paciente.BAIRRO, paciente.NOME_PACIENTE, paciente.DT_NASC_PACIENTE, paciente.RG_PACIENTE, paciente.CPF_PACIENTE, paciente.TEL_PACIENTE, paciente.EMAIL_PACIENTE],
+            [paciente.NOME_RESPONSAVEL, paciente.DT_NASC_RESPONSAVEL, paciente.RG_RESPONSAVEL, paciente.CPF_RESPONSAVEL, paciente.TEL_RESPONSAVEL, paciente.EMAIL_RESPONSAVEL, paciente.LOGRADOURO, paciente.BAIRRO, paciente.NOME_PACIENTE, paciente.DT_NASC_PACIENTE, paciente.RG_PACIENTE, paciente.CPF_PACIENTE, paciente.TEL_PACIENTE, paciente.EMAIL_PACIENTE],
             (error, resultado, field) => {
                 conn.release();
 
